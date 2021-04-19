@@ -1,6 +1,6 @@
 const http = require("http");
 
-const hostname = "0.0.0.0";
+const hostname = "localhost";
 const port = 3000;
 
 const server = http.createServer((req, res) => {
@@ -23,12 +23,18 @@ const io = require("socket.io")(server, {
 io.on("connection", (socket) => {
   console.log("A user connected");
 
-  socket.emit("message", "Hi !");
+  socket.emit("connected", {});
 
   socket.on("test", (data) => {
     console.log("Test recieved");
     console.log(data);
   });
+
+  socket.on("askForPseudo", (data) => {
+    console.log(socket.id + " ask for pseudo : " + data.pseudo);
+    socket.emit("pseudoResponse", { response: true });
+  });
+
   //socket.broadcast.emit("message", "A new personne is connected !");
 
   //io.emit('message', 'This a send message')
