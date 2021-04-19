@@ -1,0 +1,20 @@
+{
+  "name": "alphachessserver",
+  "version": "1.0.0",
+  "description": "AlphaChesServer Socket Io",
+  "main": "main.js",
+  "scripts": {
+    "start": "node start main.js",
+    "test": "node start main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RomainBnfn/AlphaChessServer.git"
+  },
+  "author": "Romain Bonfn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RomainBnfn/AlphaChessServer/issues"
+  },
+  "homepage": "https://github.com/RomainBnfn/AlphaChessServer#readme"
+}
