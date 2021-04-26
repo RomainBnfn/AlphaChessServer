@@ -139,12 +139,13 @@ io.on("connection", (socket) => {
     setOpponentFirebaseUID(firebaseUID, opponentFirebaseUID);
     setOpponentFirebaseUID(opponentFirebaseUID, firebaseUID);
 
+    let first = Math.random() < 0.5;
     // todo
     io.to(opponentSocketID).emit("startGame", {
-      myTurn: false,
+      myTurn: first,
     });
     io.to(socketId).emit("startGame", {
-      myTurn: true,
+      myTurn: !first,
     });
   });
 
@@ -167,7 +168,17 @@ io.on("connection", (socket) => {
   });
 
   socket.on("giveup", (data) => {
-    io.to(opponentSocketID).emit("giveup", {});
+    let socket = getOpponentSocketID(firebaseUID);
+    if (socket) {
+      io.to(socket).emit("giveup", {});
+    }
+  });
+
+  socket.on("timeout", (data) => {
+    let socket = getOpponentSocketID(firebaseUID);
+    if (socket) {
+      io.to(socket).emit("timeout", {});
+    }
   });
 
   //socket.broadcast.emit("message", "A new personne is connected !");
