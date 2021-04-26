@@ -121,9 +121,11 @@ io.on("connection", (socket) => {
 
   socket.on("demandeDuel", (data) => {
     let opponent = data.opponent;
+    let options = data.options;
     let socketOpponent = getVarValue(opponent.firebaseUID, "socketID");
     io.to(socketOpponent).emit("demandeDuel", {
       opponent: { pseudo: pseudo, firebaseUID: firebaseUID },
+      options: options,
     });
   });
 
@@ -131,6 +133,7 @@ io.on("connection", (socket) => {
     let opponent = data.opponent;
     opponentFirebaseUID = opponent.firebaseUID;
     opponentSocketID = getSocketID(opponentFirebaseUID);
+    let options = data.options;
 
     io.to(opponentSocketID).emit("acceptationDuel", {
       opponent: { pseudo: pseudo, firebaseUID: firebaseUID },
@@ -143,9 +146,11 @@ io.on("connection", (socket) => {
     // todo
     io.to(opponentSocketID).emit("startGame", {
       myTurn: first,
+      options: options,
     });
     io.to(socketId).emit("startGame", {
       myTurn: !first,
+      options: options,
     });
   });
 
