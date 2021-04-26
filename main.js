@@ -55,6 +55,10 @@ getOpponentFirebaseUID = (firebaseUID) => {
   return getVarValue(firebaseUID, "opponentFirebaseUID");
 };
 
+getOpponentSocketID = (firebaseUID) => {
+  return getVarValue(getOpponentFirebaseUID(firebaseUID), "socketID");
+};
+
 setSocketID = (firebaseUID, socketId) => {
   let oldSocketId = getVarValue(firebaseUID, "socketID");
   if (oldSocketId && oldSocketId != socketId) {
@@ -162,6 +166,10 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("giveup", (data) => {
+    io.to(opponentSocketID).emit("giveup", {});
+  });
+
   //socket.broadcast.emit("message", "A new personne is connected !");
   //io.emit('message', 'This a send message')
   //socket.join("UniqueIDForTheRoom");
@@ -169,6 +177,10 @@ io.on("connection", (socket) => {
   //io.to("Unique ID").emit("message", "data");
 
   socket.on("disconnect", (data) => {
+    let socket = getOpponentSocketID(firebaseUID);
+    if (socket) {
+      io.to(socket).emit("giveup", {});
+    }
     infoJoueurs.delete(firebaseUID);
     console.log("[-] " + pseudo + " s'est déconnecté.");
 
